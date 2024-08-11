@@ -17,6 +17,15 @@ const Cover = ({ title, login, coverImg }) => {
             <img src={coverImg} alt="" />
           </div>
           <h1>{title}</h1>
+          <p style={{ fontSize: "12px" }}>
+            DisasterGuard is a framework aimed at managing and reducing the
+            impacts of both natural and human-made disasters. Its main
+            objectives are to minimize loss of life, property, and resources,
+            and to facilitate quick recovery and restoration of normalcy in
+            affected areas.
+          </p>
+
+          <br />
           <p>Please connect your wallet to continue.</p>
           <Button
             onClick={login}

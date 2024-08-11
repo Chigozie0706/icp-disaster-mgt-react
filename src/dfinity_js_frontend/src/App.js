@@ -1,14 +1,21 @@
 import React, { useEffect, useCallback, useState } from "react";
-import { Container, Nav } from "react-bootstrap";
-import Gyms from "./components/marketplace/Gyms";
+import { Navbar, Nav, Container } from "react-bootstrap";
+import DisasterReports from "./components/marketplace/DisasterReports";
+import DisasterReportDetails from "./components/marketplace/DisasterReportDetails";
 import "./App.css";
 import Wallet from "./components/Wallet";
-import coverImg from "./assets/img/gym_image.jpg";
+import coverImg from "./assets/img/dis.jpg";
 import { login, logout as destroy } from "./utils/auth";
-import { balance as principalBalance } from "./utils/ledger"
+import { balance as principalBalance } from "./utils/ledger";
 import Cover from "./components/utils/Cover";
 import { Notification } from "./components/utils/Notifications";
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Routes,
+} from "react-router-dom";
 
 const App = function AppWrapper() {
   const isAuthenticated = window.auth.isAuthenticated;
@@ -22,30 +29,47 @@ const App = function AppWrapper() {
     }
   });
 
-  useEffect(() => {
-    getBalance();
-  }, [getBalance]);
+  // useEffect(() => {
+  //   getBalance();
+  // }, [getBalance]);
 
   return (
     <>
       <Notification />
       {isAuthenticated ? (
-        <Container fluid="md">
-          <Nav className="justify-content-end pt-3 pb-5">
-            <Nav.Item>
-              <Wallet
-                principal={principal}
-                balance={balance}
-                symbol={"ICP"}
-                isAuthenticated={isAuthenticated}
-                destroy={destroy}
-              />
-            </Nav.Item>
-          </Nav>
-          <main>
-            <Gyms />
-          </main>
-        </Container>
+        <>
+          <Navbar bg="dark" variant="dark" expand="lg">
+            <Container>
+              <Navbar.Brand href="#">DisasterNavigator</Navbar.Brand>
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="ms-auto">
+                  <Nav.Item>
+                    <Wallet
+                      principal={principal}
+                      balance={balance}
+                      symbol={"ICP"}
+                      isAuthenticated={isAuthenticated}
+                      destroy={destroy}
+                    />
+                  </Nav.Item>
+                </Nav>
+              </Navbar.Collapse>
+            </Container>
+          </Navbar>
+
+          <Container>
+            <Router>
+              <Routes>
+                <Route path="/" element={<DisasterReports />} />
+                <Route
+                  path="/disaster_report/:disasterId"
+                  element={<DisasterReportDetails />}
+                />
+              </Routes>
+            </Router>
+          </Container>
+        </>
       ) : (
         <Cover name="GymFusion" login={login} coverImg={coverImg} />
       )}

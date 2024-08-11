@@ -1,37 +1,28 @@
 import { Principal } from "@dfinity/principal";
 import { transferICP } from "./ledger";
 
-export async function createGymProfile(gym) {
-  return window.canister.marketplace.createGymProfile(gym);
+export async function createDisasterReport(report) {
+  return window.canister.marketplace.createDisasterReport(report);
 }
 
-export async function getAllGyms() {
-
+export async function getAllDisasterReports() {
   try {
-    const result = await window.canister.marketplace.getAllGym();
+    const result = await window.canister.marketplace.getAllDisasterReports();
     console.log("Result:", result);
     return result;
   } catch (err) {
-    // Log the error for debugging
-    console.error("Error fetching gyms:", err);
-
-    // Handle specific error cases based on their properties
+    console.error("Error fetching disaster reports:", err);
     if (err.name === "AgentHTTPResponseError") {
       const authClient = window.auth.client;
-      // Logout user if there's a specific HTTP response error
       await authClient.logout();
     }
-    // Return an empty array in case of error
     return [];
   }
-
 }
 
-
-
-export async function getGymById(id) {
+export async function getDisasterReportById(id) {
   try {
-    return await window.canister.marketplace.getGymById(id);
+    return await window.canister.marketplace.getDisasterReportById(id);
   } catch (err) {
     if (err.name === "AgentHTTPResponseError") {
       const authClient = window.auth.client;
@@ -41,10 +32,9 @@ export async function getGymById(id) {
   }
 }
 
-
-export async function getAllEnrollesByGymId(id) {
+export async function getAllVolunteersByReportId(id) {
   try {
-    return await window.canister.marketplace.getAllEnrollesByGymId(id);
+    return await window.canister.marketplace.getAllVolunteersByReportId(id);
   } catch (err) {
     if (err.name === "AgentHTTPResponseError") {
       const authClient = window.auth.client;
@@ -54,9 +44,9 @@ export async function getAllEnrollesByGymId(id) {
   }
 }
 
-export async function getAllServicesById(id) {
+export async function getAllServicesByReportId(id) {
   try {
-    return await window.canister.marketplace.getAllServicesById(id);
+    return await window.canister.marketplace.getAllServicesByReportId(id);
   } catch (err) {
     if (err.name === "AgentHTTPResponseError") {
       const authClient = window.auth.client;
@@ -66,30 +56,39 @@ export async function getAllServicesById(id) {
   }
 }
 
-
-export async function gymMembershipRegistration(payload) {
-  return window.canister.marketplace.gymMembershipRegistration(payload);
+export async function volunteerRegistration(payload) {
+  return window.canister.marketplace.volunteerRegistration(payload);
 }
 
-export async function addGymService(payload) {
-  return window.canister.marketplace.addGymService(payload);
+export async function addDisasterImages(payload) {
+  return window.canister.marketplace.addDisasterImages(payload);
 }
 
-
-export async function updateGymById(id, payload) {
-  return window.canister.marketplace.updateGymById(id, payload);
+export async function updateDisasterReportById(id, payload) {
+  return window.canister.marketplace.updateDisasterReportById(id, payload);
 }
 
-export async function deleteGymById(id) {
-  return window.canister.marketplace.deleteGymById(id);
+export async function deleteDisasterReportById(id) {
+  return window.canister.marketplace.deleteDisasterReportById(id);
 }
 
-
-export async function buyProduct(product) {
+export async function purchaseAidProduct(product) {
   const marketplaceCanister = window.canister.marketplace;
   const orderResponse = await marketplaceCanister.createOrder(product.id);
   const sellerPrincipal = Principal.from(orderResponse.Ok.seller);
-  const sellerAddress = await marketplaceCanister.getAddressFromPrincipal(sellerPrincipal);
-  const block = await transferICP(sellerAddress, orderResponse.Ok.price, orderResponse.Ok.memo);
-  await marketplaceCanister.completePurchase(sellerPrincipal, product.id, orderResponse.Ok.price, block, orderResponse.Ok.memo);
+  const sellerAddress = await marketplaceCanister.getAddressFromPrincipal(
+    sellerPrincipal
+  );
+  const block = await transferICP(
+    sellerAddress,
+    orderResponse.Ok.price,
+    orderResponse.Ok.memo
+  );
+  await marketplaceCanister.completePurchase(
+    sellerPrincipal,
+    product.id,
+    orderResponse.Ok.price,
+    block,
+    orderResponse.Ok.memo
+  );
 }
