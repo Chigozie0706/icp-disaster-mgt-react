@@ -32,34 +32,6 @@ export async function getDisasterReportById(id) {
   }
 }
 
-export async function getAllVolunteersByReportId(id) {
-  try {
-    return await window.canister.marketplace.getAllVolunteersByReportId(id);
-  } catch (err) {
-    if (err.name === "AgentHTTPResponseError") {
-      const authClient = window.auth.client;
-      await authClient.logout();
-    }
-    return [];
-  }
-}
-
-export async function getAllServicesByReportId(id) {
-  try {
-    return await window.canister.marketplace.getAllServicesByReportId(id);
-  } catch (err) {
-    if (err.name === "AgentHTTPResponseError") {
-      const authClient = window.auth.client;
-      await authClient.logout();
-    }
-    return [];
-  }
-}
-
-export async function volunteerRegistration(payload) {
-  return window.canister.marketplace.volunteerRegistration(payload);
-}
-
 export async function addDisasterImages(payload) {
   return window.canister.marketplace.addDisasterImages(payload);
 }
@@ -72,23 +44,23 @@ export async function deleteDisasterImageById(payload) {
   return window.canister.marketplace.deleteDisasterImageById(payload);
 }
 
-export async function purchaseAidProduct(product) {
-  const marketplaceCanister = window.canister.marketplace;
-  const orderResponse = await marketplaceCanister.createOrder(product.id);
-  const sellerPrincipal = Principal.from(orderResponse.Ok.seller);
-  const sellerAddress = await marketplaceCanister.getAddressFromPrincipal(
-    sellerPrincipal
-  );
-  const block = await transferICP(
-    sellerAddress,
-    orderResponse.Ok.price,
-    orderResponse.Ok.memo
-  );
-  await marketplaceCanister.completePurchase(
-    sellerPrincipal,
-    product.id,
-    orderResponse.Ok.price,
-    block,
-    orderResponse.Ok.memo
-  );
-}
+// export async function purchaseAidProduct(product) {
+//   const marketplaceCanister = window.canister.marketplace;
+//   const orderResponse = await marketplaceCanister.createOrder(product.id);
+//   const sellerPrincipal = Principal.from(orderResponse.Ok.seller);
+//   const sellerAddress = await marketplaceCanister.getAddressFromPrincipal(
+//     sellerPrincipal
+//   );
+//   const block = await transferICP(
+//     sellerAddress,
+//     orderResponse.Ok.price,
+//     orderResponse.Ok.memo
+//   );
+//   await marketplaceCanister.completePurchase(
+//     sellerPrincipal,
+//     product.id,
+//     orderResponse.Ok.price,
+//     block,
+//     orderResponse.Ok.memo
+//   );
+// }

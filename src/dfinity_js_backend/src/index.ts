@@ -124,25 +124,6 @@ export default Canister({
         return Ok(updatedReport);
     }),
 
-    // // Update method to delete a disaster report by ID
-    // deleteDisasterReportById: update([text], Result(text, Message), (id) => {
-    //     if (!isValidUuid(id)) {
-    //         return Err({
-    //             InvalidPayload: `id=${id} is not in the valid format.`,
-    //         });
-    //     }
-
-    //     const deletedReportOpt = disasterReportStorage.remove(id);
-    //     if ("None" in deletedReportOpt) {
-    //         return Err({ NotFound: `cannot delete the report: disaster report with id=${id} not found` });
-    //     }
-
-    //     if (deletedReportOpt.Some.reporter.toText() !== ic.caller().toText()) {
-    //         return Err({ NotAuthorized: `you are not the reporter of this disaster report with id=${id}` });
-    //     }
-
-    //     return Ok(deletedReportOpt.Some.id);
-    // }),
 
     // Update method to add disaster images with timestamp
 addDisasterImages: update([DisasterImagesPayload], Result(DisasterReport, Message), (payload) => {
