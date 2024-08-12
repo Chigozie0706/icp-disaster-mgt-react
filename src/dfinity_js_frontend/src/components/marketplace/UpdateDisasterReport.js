@@ -106,7 +106,10 @@ const UpdateDisasterReport = ({
               label="Type of Disaster"
               className="mb-3"
             >
-              <Form.Select onChange={(e) => setDisasterType(e.target.value)}>
+              <Form.Select
+                onChange={(e) => setDisasterType(e.target.value)}
+                value={disasterType}
+              >
                 <option value=""></option>
                 <option value="earthquake">Earthquake</option>
                 <option value="flood">Flood</option>
@@ -205,7 +208,10 @@ const UpdateDisasterReport = ({
               label="Severity Level"
               className="mb-3"
             >
-              <Form.Select onChange={(e) => setSeverity(e.target.value)}>
+              <Form.Select
+                onChange={(e) => setSeverity(e.target.value)}
+                value={severity}
+              >
                 <option value=""></option>
                 <option value="minor">Minor</option>
                 <option value="moderate">Moderate</option>

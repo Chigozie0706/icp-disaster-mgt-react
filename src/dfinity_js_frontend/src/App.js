@@ -35,7 +35,7 @@ const App = function AppWrapper() {
         <>
           <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
-              <Navbar.Brand href="#">DisasterNavigator</Navbar.Brand>
+              <Navbar.Brand href="#">DisasterGuard</Navbar.Brand>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ms-auto">
