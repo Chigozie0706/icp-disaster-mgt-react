@@ -158,6 +158,7 @@ addDisasterImages: update([DisasterImagesPayload], Result(DisasterReport, Messag
 }),
 
 
+    // Update method to delete disaster images by Id
 deleteDisasterImageById: update([DisasterImagesPayload], Result(DisasterReport, Message), (payload) => {
   if (!isValidUuid(payload.disasterId)) {
     return Err({
