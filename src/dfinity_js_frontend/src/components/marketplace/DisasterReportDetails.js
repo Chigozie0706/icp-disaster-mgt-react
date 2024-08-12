@@ -4,6 +4,7 @@ import {
   getDisasterReportById,
   updateDisasterReportById,
   addDisasterImages,
+  deleteDisasterImageById,
 } from "../../utils/marketplace";
 import Loader from "../utils/Loader";
 import { NotificationError, NotificationSuccess } from "../utils/Notifications";
@@ -16,6 +17,7 @@ import {
   ExclamationCircle,
   PersonCircle,
   PinMap,
+  Trash,
 } from "react-bootstrap-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./DisasterCard.css";
@@ -99,6 +101,7 @@ const DisasterReportDetails = () => {
       toast(
         <NotificationSuccess text="Disaster report updated successfully." />
       );
+      fetchReportDetails();
     } catch (error) {
       console.log({ error });
       toast(<NotificationError text="Failed to update report." />);
@@ -115,6 +118,29 @@ const DisasterReportDetails = () => {
       const report = response.Ok;
       console.log("Registration successful:", report);
       toast(<NotificationSuccess text="image added successfully." />);
+      fetchReportDetails();
+    } catch (error) {
+      console.error(error);
+      toast(<NotificationError text="an error occured." />);
+    } finally {
+    }
+  };
+
+  const deleteImage = async (payload) => {
+    try {
+      if (
+        !payload.disasterId ||
+        !payload.timestamp ||
+        !payload.disasterImageUrl
+      ) {
+        throw new Error("Invalid payload: Missing required fields.");
+      }
+
+      const response = await deleteDisasterImageById(payload);
+      console.log(response);
+      const report = response.Ok;
+      console.log(" success:", report);
+      toast(<NotificationSuccess text="image deleted . . ." />);
       fetchReportDetails();
     } catch (error) {
       console.error(error);
@@ -181,7 +207,7 @@ const DisasterReportDetails = () => {
             disasterId={disasterId}
           />
           <Card
-            className="mb-4 shadow-sm"
+            className="mb-4 mt-3 shadow-sm"
             style={{
               fontSize: "12px",
               fontFamily: "Roboto, sans-serif",
@@ -217,16 +243,19 @@ const DisasterReportDetails = () => {
                 <GeoAlt className="me-2" />
                 {city}, {state} <br />
                 <ExclamationCircle className="me-2" />
-                Severity: <span style={{ fontWeight: "bold" }}>
+                Severity:{" "}
+                <span
+                  style={{ fontWeight: "bold" }}
+                  className="text-capitalize"
+                >
                   {severity}
                 </span>{" "}
                 <br />
                 <PersonCircle className="me-2" />
                 Impact: <span style={{ fontWeight: "bold" }}>{impact}</span>
               </Card.Text>
-
               {/* Image Upload Section */}
-              <Card.Text as="div">
+              <div>
                 <strong>Upload Disaster Image:</strong> <br />
                 <input
                   type="text"
@@ -236,7 +265,7 @@ const DisasterReportDetails = () => {
                   style={{ width: "100%", marginBottom: "10px" }}
                 />
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-primary btn-sm"
                   size="sm"
                   onClick={() =>
                     addImages({
@@ -249,14 +278,21 @@ const DisasterReportDetails = () => {
                 >
                   Add Image
                 </button>
-              </Card.Text>
-
+              </div>{" "}
               {/* Display Uploaded Images */}
               <Card.Text>
                 <strong>Uploaded Images:</strong> <br />
+              </Card.Text>
+              <div style={{ maxHeight: "200px", overflowY: "auto" }}>
                 {report?.disasterImages && report.disasterImages.length > 0 ? (
                   report.disasterImages.map((image, index) => (
-                    <div key={index}>
+                    <div
+                      key={index}
+                      style={{
+                        position: "relative",
+                        marginBottom: "10px",
+                      }}
+                    >
                       <img
                         src={image.disasterImageUrl}
                         alt={`Disaster image ${index + 1}`}
@@ -270,12 +306,33 @@ const DisasterReportDetails = () => {
                         Uploaded on:{" "}
                         {new Date(image.timestamp).toLocaleString()}
                       </small>
+
+                      <button
+                        style={{
+                          position: "absolute",
+                          top: "0",
+                          right: "0",
+                          border: "none",
+                          background: "transparent",
+                          cursor: "pointer",
+                        }}
+                        size="sm"
+                        onClick={() =>
+                          deleteImage({
+                            disasterId,
+                            timestamp: image.timestamp,
+                            disasterImageUrl: image.disasterImageUrl,
+                          })
+                        }
+                      >
+                        <Trash color="red" />
+                      </button>
                     </div>
                   ))
                 ) : (
                   <span>No images uploaded yet.</span>
                 )}
-              </Card.Text>
+              </div>
             </Card.Body>
             <Card.Footer className="text-muted">
               <Row>

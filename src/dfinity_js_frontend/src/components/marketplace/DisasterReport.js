@@ -12,8 +12,8 @@ const DisasterReport = ({ report }) => {
   return (
     <>
       <Col key={disasterId}>
-        <Card className="custom-card">
-          <Card.Header className="card-header" style={{ fontSize: 14 }}>
+        <Card className="custom-card" style={{ fontSize: 12 }}>
+          <Card.Header className="card-header">
             Disaster ID: {disasterId}
           </Card.Header>
           <Card.Img variant="top" src={imgUrl} className="card-image" />

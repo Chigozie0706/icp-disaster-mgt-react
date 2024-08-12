@@ -68,8 +68,8 @@ export async function updateDisasterReportById(id, payload) {
   return window.canister.marketplace.updateDisasterReportById(id, payload);
 }
 
-export async function deleteDisasterReportById(id) {
-  return window.canister.marketplace.deleteDisasterReportById(id);
+export async function deleteDisasterImageById(payload) {
+  return window.canister.marketplace.deleteDisasterImageById(payload);
 }
 
 export async function purchaseAidProduct(product) {

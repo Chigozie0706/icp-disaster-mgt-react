@@ -124,25 +124,25 @@ export default Canister({
         return Ok(updatedReport);
     }),
 
-    // Update method to delete a disaster report by ID
-    deleteDisasterReportById: update([text], Result(text, Message), (id) => {
-        if (!isValidUuid(id)) {
-            return Err({
-                InvalidPayload: `id=${id} is not in the valid format.`,
-            });
-        }
+    // // Update method to delete a disaster report by ID
+    // deleteDisasterReportById: update([text], Result(text, Message), (id) => {
+    //     if (!isValidUuid(id)) {
+    //         return Err({
+    //             InvalidPayload: `id=${id} is not in the valid format.`,
+    //         });
+    //     }
 
-        const deletedReportOpt = disasterReportStorage.remove(id);
-        if ("None" in deletedReportOpt) {
-            return Err({ NotFound: `cannot delete the report: disaster report with id=${id} not found` });
-        }
+    //     const deletedReportOpt = disasterReportStorage.remove(id);
+    //     if ("None" in deletedReportOpt) {
+    //         return Err({ NotFound: `cannot delete the report: disaster report with id=${id} not found` });
+    //     }
 
-        if (deletedReportOpt.Some.reporter.toText() !== ic.caller().toText()) {
-            return Err({ NotAuthorized: `you are not the reporter of this disaster report with id=${id}` });
-        }
+    //     if (deletedReportOpt.Some.reporter.toText() !== ic.caller().toText()) {
+    //         return Err({ NotAuthorized: `you are not the reporter of this disaster report with id=${id}` });
+    //     }
 
-        return Ok(deletedReportOpt.Some.id);
-    }),
+    //     return Ok(deletedReportOpt.Some.id);
+    // }),
 
     // Update method to add disaster images with timestamp
 addDisasterImages: update([DisasterImagesPayload], Result(DisasterReport, Message), (payload) => {
@@ -176,6 +176,45 @@ addDisasterImages: update([DisasterImagesPayload], Result(DisasterReport, Messag
     return Ok(disasterOpt.Some);
 }),
 
+
+deleteDisasterImageById: update([DisasterImagesPayload], Result(DisasterReport, Message), (payload) => {
+  if (!isValidUuid(payload.disasterId)) {
+    return Err({
+      InvalidPayload: `payload.disasterId=${payload.disasterId} is not in the valid format.`,
+    });
+  }
+
+  const { disasterId, timestamp, disasterImageUrl } = payload;
+  const disasterOpt = disasterReportStorage.get(disasterId);
+
+  if ("None" in disasterOpt) {
+    return Err({ NotFound: `Disaster with id=${disasterId} not found` });
+  }
+
+  if (disasterOpt.Some.reporterId.toText() !== ic.caller().toText()) {
+    return Err({ NotAuthorized: `you are not authorized to delete images from this disaster with id=${disasterId} ` });
+  }
+
+      // @ts-ignore
+  const imageIndex = disasterOpt.Some.disasterImages.findIndex((image) => image.timestamp === timestamp && image.disasterImageUrl === disasterImageUrl
+  );
+  if (imageIndex === -1) {
+    return Err({ NotFound: `Image with timestamp=${timestamp} and disasterImageUrl=${disasterImageUrl} not found in disaster with id=${disasterId}` });
+  }
+
+  disasterOpt.Some.disasterImages.splice(imageIndex, 1);
+  disasterReportStorage.insert(disasterId, disasterOpt.Some);
+  return Ok(disasterOpt.Some);
+}),
+
+    /*
+        a helper function to get address from the principal
+        the address is later used in the transfer method
+    */
+getAddressFromPrincipal: query([Principal], text, (principal) => {
+    return hexAddressFromPrincipal(principal, 0);
+}),
+
 });
 
 // Helper function to hash input
@@ -184,13 +223,7 @@ function hash(input: any): nat64 {
 }
 
 
-/*
-        a helper function to get address from the principal
-        the address is later used in the transfer method
-    */
-        getAddressFromPrincipal: query([Principal], text, (principal) => {
-            return hexAddressFromPrincipal(principal, 0);
-        }),
+
 
 // Helper function to generate a correlation ID
 function generateCorrelationId(reportId: text): nat64 {

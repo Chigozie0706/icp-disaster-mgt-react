@@ -10,12 +10,7 @@ import { balance as principalBalance } from "./utils/ledger";
 import Cover from "./components/utils/Cover";
 import { Notification } from "./components/utils/Notifications";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 const App = function AppWrapper() {
   const isAuthenticated = window.auth.isAuthenticated;
@@ -29,9 +24,9 @@ const App = function AppWrapper() {
     }
   });
 
-  // useEffect(() => {
-  //   getBalance();
-  // }, [getBalance]);
+  useEffect(() => {
+    getBalance();
+  }, [getBalance]);
 
   return (
     <>
