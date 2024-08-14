@@ -1,9 +1,209 @@
-service: () -> {
-    addDisasterImages: (record {disasterId:text; timestamp:text; disasterImageUrl:text}) -> (variant {Ok:record {imgUrl:text; latitude:text; impact:text; contact:text; disasterId:text; reporterName:text; city:text; date:text; disasterImages:vec record {disasterId:text; timestamp:text; disasterImageUrl:text}; email:text; state:text; reporterId:principal; longitude:text; disasterType:text; severity:text}; Err:variant {AlreadyExist:text; InvalidPayload:text; NotFound:text; NotAuthorized:text}});
-    createDisasterReport: (record {imgUrl:text; latitude:text; impact:text; contact:text; reporterName:text; city:text; date:text; email:text; state:text; longitude:text; disasterType:text; severity:text}) -> (variant {Ok:record {imgUrl:text; latitude:text; impact:text; contact:text; disasterId:text; reporterName:text; city:text; date:text; disasterImages:vec record {disasterId:text; timestamp:text; disasterImageUrl:text}; email:text; state:text; reporterId:principal; longitude:text; disasterType:text; severity:text}; Err:variant {AlreadyExist:text; InvalidPayload:text; NotFound:text; NotAuthorized:text}});
-    deleteDisasterImageById: (record {disasterId:text; timestamp:text; disasterImageUrl:text}) -> (variant {Ok:record {imgUrl:text; latitude:text; impact:text; contact:text; disasterId:text; reporterName:text; city:text; date:text; disasterImages:vec record {disasterId:text; timestamp:text; disasterImageUrl:text}; email:text; state:text; reporterId:principal; longitude:text; disasterType:text; severity:text}; Err:variant {AlreadyExist:text; InvalidPayload:text; NotFound:text; NotAuthorized:text}});
+service : {
+    addDisasterImages: (record { 
+        disasterId: text; 
+        timestamp: text; 
+        disasterImageUrl: text; 
+    }) -> (variant { 
+        Ok: record { 
+            imgUrl: text; 
+            latitude: text; 
+            impact: text; 
+            contact: text; 
+            disasterId: text; 
+            reporterName: text; 
+            city: text; 
+            date: text; 
+            disasterImages: vec record { 
+                disasterId: text; 
+                timestamp: text; 
+                disasterImageUrl: text; 
+            }; 
+            email: text; 
+            state: text; 
+            reporterId: principal; 
+            longitude: text; 
+            disasterType: text; 
+            severity: text 
+        }; 
+        Err: variant { 
+            AlreadyExist: text; 
+            InvalidPayload: text; 
+            NotFound: text; 
+            NotAuthorized: text 
+        } 
+    });
+
+    createDisasterReport: (record { 
+        imgUrl: text; 
+        latitude: text; 
+        impact: text; 
+        contact: text; 
+        reporterName: text; 
+        city: text; 
+        date: text; 
+        email: text; 
+        state: text; 
+        longitude: text; 
+        disasterType: text; 
+        severity: text 
+    }) -> (variant { 
+        Ok: record { 
+            imgUrl: text; 
+            latitude: text; 
+            impact: text; 
+            contact: text; 
+            disasterId: text; 
+            reporterName: text; 
+            city: text; 
+            date: text; 
+            disasterImages: vec record { 
+                disasterId: text; 
+                timestamp: text; 
+                disasterImageUrl: text; 
+            }; 
+            email: text; 
+            state: text; 
+            reporterId: principal; 
+            longitude: text; 
+            disasterType: text; 
+            severity: text 
+        }; 
+        Err: variant { 
+            AlreadyExist: text; 
+            InvalidPayload: text; 
+            NotFound: text; 
+            NotAuthorized: text 
+        } 
+    });
+
+    deleteDisasterImageById: (record { 
+        disasterId: text; 
+        timestamp: text; 
+        disasterImageUrl: text; 
+    }) -> (variant { 
+        Ok: record { 
+            imgUrl: text; 
+            latitude: text; 
+            impact: text; 
+            contact: text; 
+            disasterId: text; 
+            reporterName: text; 
+            city: text; 
+            date: text; 
+            disasterImages: vec record { 
+                disasterId: text; 
+                timestamp: text; 
+                disasterImageUrl: text; 
+            }; 
+            email: text; 
+            state: text; 
+            reporterId: principal; 
+            longitude: text; 
+            disasterType: text; 
+            severity: text 
+        }; 
+        Err: variant { 
+            AlreadyExist: text; 
+            InvalidPayload: text; 
+            NotFound: text; 
+            NotAuthorized: text 
+        } 
+    });
+
     getAddressFromPrincipal: (principal) -> (text) query;
-    getAllDisasterReports: () -> (vec record {imgUrl:text; latitude:text; impact:text; contact:text; disasterId:text; reporterName:text; city:text; date:text; disasterImages:vec record {disasterId:text; timestamp:text; disasterImageUrl:text}; email:text; state:text; reporterId:principal; longitude:text; disasterType:text; severity:text}) query;
-    getDisasterReportById: (text) -> (variant {Ok:record {imgUrl:text; latitude:text; impact:text; contact:text; disasterId:text; reporterName:text; city:text; date:text; disasterImages:vec record {disasterId:text; timestamp:text; disasterImageUrl:text}; email:text; state:text; reporterId:principal; longitude:text; disasterType:text; severity:text}; Err:variant {AlreadyExist:text; InvalidPayload:text; NotFound:text; NotAuthorized:text}}) query;
-    updateDisasterReportById: (text, record {imgUrl:text; latitude:text; impact:text; contact:text; reporterName:text; city:text; date:text; email:text; state:text; longitude:text; disasterType:text; severity:text}) -> (variant {Ok:record {imgUrl:text; latitude:text; impact:text; contact:text; disasterId:text; reporterName:text; city:text; date:text; disasterImages:vec record {disasterId:text; timestamp:text; disasterImageUrl:text}; email:text; state:text; reporterId:principal; longitude:text; disasterType:text; severity:text}; Err:variant {AlreadyExist:text; InvalidPayload:text; NotFound:text; NotAuthorized:text}});
+
+    getAllDisasterReports: () -> (vec record { 
+        imgUrl: text; 
+        latitude: text; 
+        impact: text; 
+        contact: text; 
+        disasterId: text; 
+        reporterName: text; 
+        city: text; 
+        date: text; 
+        disasterImages: vec record { 
+            disasterId: text; 
+            timestamp: text; 
+            disasterImageUrl: text; 
+        }; 
+        email: text; 
+        state: text; 
+        reporterId: principal; 
+        longitude: text; 
+        disasterType: text; 
+        severity: text 
+    }) query;
+
+    getDisasterReportById: (text) -> (variant { 
+        Ok: record { 
+            imgUrl: text; 
+            latitude: text; 
+            impact: text; 
+            contact: text; 
+            disasterId: text; 
+            reporterName: text; 
+            city: text; 
+            date: text; 
+            disasterImages: vec record { 
+                disasterId: text; 
+                timestamp: text; 
+                disasterImageUrl: text; 
+            }; 
+            email: text; 
+            state: text; 
+            reporterId: principal; 
+            longitude: text; 
+            disasterType: text; 
+            severity: text 
+        }; 
+        Err: variant { 
+            AlreadyExist: text; 
+            InvalidPayload: text; 
+            NotFound: text; 
+            NotAuthorized: text 
+        } 
+    }) query;
+
+    updateDisasterReportById: (text, record { 
+        imgUrl: text; 
+        latitude: text; 
+        impact: text; 
+        contact: text; 
+        reporterName: text; 
+        city: text; 
+        date: text; 
+        email: text; 
+        state: text; 
+        longitude: text; 
+        disasterType: text; 
+        severity: text 
+    }) -> (variant { 
+        Ok: record { 
+            imgUrl: text; 
+            latitude: text; 
+            impact: text; 
+            contact: text; 
+            disasterId: text; 
+            reporterName: text; 
+            city: text; 
+            date: text; 
+            disasterImages: vec record { 
+                disasterId: text; 
+                timestamp: text; 
+                disasterImageUrl: text; 
+            }; 
+            email: text; 
+            state: text; 
+            reporterId: principal; 
+            longitude: text; 
+            disasterType: text; 
+            severity: text 
+        }; 
+        Err: variant { 
+            AlreadyExist: text; 
+            InvalidPayload: text; 
+            NotFound: text; 
+            NotAuthorized: text 
+        } 
+    });
 }
